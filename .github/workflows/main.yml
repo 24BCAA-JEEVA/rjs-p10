@@ -3,12 +3,12 @@ name: React Practical 10
 
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   autograding:
@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
 
       - name: Install Packages
         run: npm install
@@ -37,6 +37,11 @@ jobs:
     needs: autograding
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -48,7 +53,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
 
       - name: Install Packages
         run: npm install
@@ -59,11 +64,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload Pages Artifact
+      - name: Upload Build
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./build
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy Website
         id: deployment
         uses: actions/deploy-pages@v4
